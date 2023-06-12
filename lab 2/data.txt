@@ -1,0 +1,20 @@
+﻿patient(1, "John Doe", "123 Main St.", "555-1234", 35, "Acme Inc.").
+patient(2, "Jane Smith", "456 Elm St.", "555-5678", 28, "XYZ Corp.").
+patient(3, "David Johnson", "789 Oak Ave.", "555-9876", 42, "ABC Corporation").
+patient(4, "Emily Brown", "321 Pine Rd.", "555-5432", 51, "DEF Corp.").
+patient(5, "Michael Wilson", "567 Maple Ave.", "555-2468", 32, "GHI Ltd.").
+
+
+doctor(10, "Dr. Johnson", "Cardiology").
+doctor(20, "Dr. Lee", "Pediatrics").
+doctor(30, "Dr. Rodriguez", "Orthopedics").
+doctor(40, "Dr. Kim", "Dermatology").
+doctor(50, "Dr. Patel", "Ophthalmology").
+
+
+appointment(10, 1, "2023-05-08", "High blood pressure", yes).
+appointment(20, 1, "2023-05-09", "Fever", no).
+appointment(10, 2, "2023-05-10", "Chest pain", yes).
+appointment(20, 2, "2023-05-11", "Sore throat", yes).
+appointment(10, 2, "2023-05-12", "Acid reflux", no).
+appointment(20, 1, "2023-05-13", "Ear infection", no).
