@@ -1,0 +1,27 @@
+
+
+% Patient Cards
+patient_card(1, 'John Doe', '123 Main St', '555-1234', 30, 'Acme Corp').
+patient_card(2, 'Jane Smith', '456 Elm St', '555-5678', 45, 'XYZ Corp').
+patient_card(3, 'Mike Johnson', '789 Oak St', '555-9101', 25, 'ABC Inc').
+
+% Doctors
+doctor(1, 'Dr. Anderson', 'Pediatrics').
+doctor(2, 'Dr. Johnson', 'Internal Medicine').
+doctor(3, 'Dr. Smith', 'Dermatology').
+
+% Appointments
+appointment(1, 1, '2023-06-14', 'Fever', 'Scheduled').
+appointment(1, 2, '2023-06-15', 'Headache', 'Scheduled').
+appointment(2, 3, '2023-06-14', 'Skin rash', 'Completed').
+appointment(3, 1, '2023-06-16', 'Cough', 'Scheduled').
+
+% Patients given sick leave by doctors
+patients_given_sick_leave(1, [1, 2]).
+patients_given_sick_leave(2, [3]).
+patients_given_sick_leave(3, []).
+
+% Diagnoses of patients
+patient_diagnoses(1, ['Fever', 'Cough']).
+patient_diagnoses(2, ['Headache']).
+patient_diagnoses(3, ['Skin rash']).
