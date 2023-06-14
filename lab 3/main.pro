@@ -1,24 +1,81 @@
-﻿list_patients_with_sick_leave(DoctorID, Patients) :-
-    findall(PatientID, appointment(DoctorID, PatientID, _, _, yes), Patients).
+domains
+    card_number = integer
+    full_name = string
+    address = string
+    phone_number = string
+    age = integer
+    place_of_work = string
+    doctor_id = integer
+    specialization = string
+    date = string
+    diagnosis = string
+    appointment_status = string
 
-list_patients_with_diagnosis(Diagnosis, Patients) :-
-    findall(PatientID, appointment(_, PatientID, _, Diagnosis, _), Patients).
+predicates
+    patient_card(card_number, full_name, address, phone_number, age, place_of_work)
+    doctor(doctor_id, full_name, specialization)
+    appointment(doctor_id, card_number, date, diagnosis, appointment_status)
+    patients_given_sick_leave(doctor_id, list(card_number))
+    patient_diagnoses(card_number, list(diagnosis))
+    total_patients(doctor_id, integer)
+    average_age(integer)
 
-list_all_patients(Patients) :-
-    findall(patient(ID, Name, Address, Phone, Age, Work),
-            patient(ID, Name, Address, Phone, Age, Work),
-            Patients).
+clauses
+    % Consult the knowledge base from the file
+    :-consult('knowledge_base.txt').
 
-find_patient(ID, Patient) :-
-    patient(ID, Patient, _, _, _, _).
+    run :-
+        writeln("Enter a query:"),
+        readln(Query),
+        process_query(Query).
 
-average_age(AverageAge) :-
-    findall(Age, patient(_, _, _, _, Age, _), Ages),
-    length(Ages, NumPatients),
-    sum_list(Ages, SumAges),
-    AverageAge is SumAges / NumPatients.
+    process_query(Query) :-
+        Query = patient_card(CardNumber, _, _, _, _, _),
+        patient_card(CardNumber, FullName, Address, PhoneNumber, Age, PlaceOfWork),
+        writeln("Patient ", FullName, "'s card information:"),
+        writeln("Card Number: ", CardNumber),
+        writeln("Address: ", Address),
+        writeln("Phone Number: ", PhoneNumber),
+        writeln("Age: ", Age),
+        writeln("Place of Work: ", PlaceOfWork).
 
-get_doctor_name(DoctorID, DoctorName) :-
-    doctor(DoctorID, DoctorName, _).
+    process_query(Query) :-
+        Query = doctor(DoctorID, _, _),
+        doctor(DoctorID, FullName, Specialization),
+        writeln("Doctor ", FullName, " specializes in ", Specialization).
 
-:- consult('data.txt').
+    process_query(Query) :-
+        Query = appointment(DoctorID, CardNumber, Date, Diagnosis, AppointmentStatus),
+        appointment(DoctorID, CardNumber, Date, Diagnosis, AppointmentStatus),
+        writeln("Appointment details:"),
+        writeln("Doctor ID: ", DoctorID),
+        writeln("Card Number: ", CardNumber),
+        writeln("Date: ", Date),
+        writeln("Diagnosis: ", Diagnosis),
+        writeln("Appointment Status: ", AppointmentStatus).
+
+    process_query(Query) :-
+        Query = patients_given_sick_leave(DoctorID, Patients),
+        patients_given_sick_leave(DoctorID, Patients),
+        writeln("Doctor ", DoctorID, " has given sick leave to the following patients: ", Patients).
+
+    process_query(Query) :-
+        Query = patient_diagnoses(CardNumber, Diagnoses),
+        patient_diagnoses(CardNumber, Diagnoses),
+        writeln("Patient ", CardNumber, " has the following diagnoses: ", Diagnoses).
+
+    process_query(Query) :-
+        Query = total_patients(DoctorID, Total),
+        total_patients(DoctorID, Total),
+        writeln("Doctor ", DoctorID, " has a total of ", Total, " patients.").
+
+    process_query(Query) :-
+        Query = average_age(Average),
+        average_age(Average),
+        writeln("The average age of all patients is: ", Average).
+
+    process_query(_) :-
+        writeln("Invalid query.").
+
+goal
+    run.
