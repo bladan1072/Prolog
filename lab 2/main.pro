@@ -1,38 +1,60 @@
-﻿list_patients_with_sick_leave(DoctorID, Patients) :-
-    findall(PatientID, appointment(DoctorID, PatientID, _, _, yes), Patients).
+implement main
 
-list_patients_with_diagnosis(Diagnosis, Patients) :-
-    findall(PatientID, appointment(_, PatientID, _, Diagnosis, _), Patients).
+domains
+    card_number = integer
+    full_name = string
+    address = string
+    phone_number = string
+    age = integer
+    place_of_work = string
+    doctor_id = integer
+    specialization = string
+    date = string
+    diagnosis = string
+    appointment_status = string
 
-list_all_patients(Patients) :-
-    findall(patient(ID, Name, Address, Phone, Age, Work),
-            patient(ID, Name, Address, Phone, Age, Work),
-            Patients).
+predicates
+    patient_card(card_number, full_name, address, phone_number, age, place_of_work)
+    doctor(doctor_id, full_name, specialization)
+    appointment(doctor_id, card_number, date, diagnosis, appointment_status)
 
-find_patient(ID, Patient) :-
-    patient(ID, Patient, _, _, _, _).
+clauses
+    :-consult('knowledge_base.txt').
 
-average_age(AverageAge) :-
-    findall(Age, patient(_, _, _, _, Age, _), Ages),
-    length(Ages, NumPatients),
-    sum_list(Ages, SumAges),
-    AverageAge is SumAges / NumPatients.
+    run :-
+        writeln("Enter a query:"),
+        readln(Query),
+        process_query(Query).
 
-num_patients(Num) :-
-    findall(ID, patient(ID, _, _, _, _, _), IDs),
-    length(IDs, Num).
+    process_query(Query) :-
+        Query = patient_card(CardNumber, _, _, _, _, _),
+        patient_card(CardNumber, FullName, Address, PhoneNumber, Age, PlaceOfWork),
+        writeln("Patient ", FullName, "'s card information:"),
+        writeln("Card Number: ", CardNumber),
+        writeln("Address: ", Address),
+        writeln("Phone Number: ", PhoneNumber),
+        writeln("Age: ", Age),
+        writeln("Place of Work: ", PlaceOfWork).
 
-max_age(MaxAge) :-
-    findall(Age, patient(_, _, _, _, Age, _), Ages),
-    max_list(Ages, MaxAge).
+    process_query(Query) :-
+        Query = doctor(DoctorID, _, _),
+        doctor(DoctorID, FullName, Specialization),
+        writeln("Doctor ", FullName, " specializes in ", Specialization).
 
-doctors_with_diagnosis(Diagnosis, Doctors) :-
-    findall(DoctorID, appointment(DoctorID, _, _, Diagnosis, _), DoctorIDs),
-    list_doctors_by_ids(DoctorIDs, Doctors).
+    process_query(Query) :-
+        Query = appointment(DoctorID, CardNumber, Date, Diagnosis, AppointmentStatus),
+        appointment(DoctorID, CardNumber, Date, Diagnosis, AppointmentStatus),
+        writeln("Appointment details:"),
+        writeln("Doctor ID: ", DoctorID),
+        writeln("Card Number: ", CardNumber),
+        writeln("Date: ", Date),
+        writeln("Diagnosis: ", Diagnosis),
+        writeln("Appointment Status: ", AppointmentStatus).
 
-list_doctors_by_ids([], []).
-list_doctors_by_ids([DoctorID|Rest], [Doctor|Doctors]) :-
-    get_doctor_name(DoctorID, Doctor),
-    list_doctors_by_ids(Rest, Doctors).
+    process_query(_) :-
+        writeln("Invalid query.").
 
-:- consult('data.txt').
+end implement main
+
+goal
+    run.
